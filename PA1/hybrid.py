@@ -22,15 +22,12 @@ def cross_correlation_2d(img, kernel):
     kernel_height, kernel_width = kernel.shape
     pad_h, pad_w = kernel_height // 2, kernel_width // 2
     
-    # Padding
     if img.ndim == 3:
         padded_img = np.pad(img, ((pad_h, pad_h), (pad_w, pad_w), (0, 0)), mode='constant')
     else:
         padded_img = np.pad(img, ((pad_h, pad_h), (pad_w, pad_w)), mode='constant')
-    
     output = np.zeros_like(img)
-    
-    # Apply per pixel
+
     for i in range(img_height):
         for j in range(img_width):
             region = padded_img[i:i+kernel_height, j:j+kernel_width]
@@ -54,8 +51,7 @@ def convolve_2d(img, kernel):
         Return an image of the same dimensions as the input image (same width,
         height and the number of color channels)
     '''
-    flipped_kernel = np.flip(kernel)
-    return cross_correlation_2d(img, flipped_kernel)
+    return cross_correlation_2d(img, np.flip(kernel))
 
 def gaussian_blur_kernel_2d(sigma, height, width):
     '''Return a Gaussian blur kernel of the given dimensions and with the given
@@ -72,7 +68,8 @@ def gaussian_blur_kernel_2d(sigma, height, width):
         Return a kernel of dimensions height x width such that convolving it
         with an image results in a Gaussian-blurred image.
     '''
-    y, x = np.mgrid[-(height//2):(height//2)+1, -(width//2):(width//2)+1]
+    
+    y, x = np.mgrid[-(height//2):(height//2) + 1, -(width//2):(width//2) + 1]
     gaussian_kernel = np.exp(-(x**2 + y**2) / (2 * sigma**2))
     gaussian_kernel /= np.sum(gaussian_kernel)
     return gaussian_kernel
@@ -104,19 +101,17 @@ def create_hybrid_image(img1, img2, sigma1, size1, high_low1, sigma2, size2,
         high_low2, mixin_ratio, scale_factor):
     '''This function adds two images to create a hybrid image, based on
     parameters specified by the user.'''
-    high_low1 = high_low1.lower()
-    high_low2 = high_low2.lower()
 
     if img1.dtype == np.uint8:
         img1 = img1.astype(np.float32) / 255.0
         img2 = img2.astype(np.float32) / 255.0
 
-    if high_low1 == 'low':
+    if high_low1.lower() == 'low':
         img1 = low_pass(img1, sigma1, size1)
     else:
         img1 = high_pass(img1, sigma1, size1)
 
-    if high_low2 == 'low':
+    if high_low2.lower() == 'low':
         img2 = low_pass(img2, sigma2, size2)
     else:
         img2 = high_pass(img2, sigma2, size2)

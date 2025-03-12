@@ -1,0 +1,32 @@
+{
+  "first_image": "E:/Coding/CS5670/CS5670_Project1/PA1/resources/trump.jpg",
+  "second_image": "E:/Coding/CS5670/CS5670_Project1/PA1/resources/putin.jpg",
+  "first_image_points": [
+    [
+      294.5,
+      158.5
+    ],
+    [
+      289.5,
+      321.5
+    ],
+    [
+      485.5,
+      241.5
+    ]
+  ],
+  "second_image_points": [
+    [
+      334.5,
+      143.0
+    ],
+    [
+      331.5,
+      317.0
+    ],
+    [
+      548.5,
+      240.0
+    ]
+  ]
+}
